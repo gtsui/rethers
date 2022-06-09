@@ -30,7 +30,7 @@ async fn main() {
   
   let mut sample_log_fetcher = SampleLogFetcher::new();
 
-  let address = env_key_prefixed_H160("FACTORY");
+  let address = env_key_prefixed_H160("UNISWAP_V2_FACTORY");
   
   let topic = hash_event_signature("PairCreated(address,address,address,uint256)");
 

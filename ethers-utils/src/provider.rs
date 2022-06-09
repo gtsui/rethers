@@ -6,7 +6,7 @@ use async_recursion::async_recursion;
 
 #[async_recursion]
 pub async fn get_ws_provider(url: &str) -> Provider<Ws> {
-
+  println!("Connecting to blockchain provider...");  
   let result = Provider::<Ws>::connect(url).await;
   let provider = match result {
     Ok(provider) => {
@@ -18,6 +18,7 @@ pub async fn get_ws_provider(url: &str) -> Provider<Ws> {
       get_ws_provider(url).await
     }
   };
+  println!("Connected to blockchain provider");
   provider
 }
 

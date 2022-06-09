@@ -1,6 +1,5 @@
 [workspace]
 
 members = [
-  "mevbot-arb",
-  "utils"
+  "ethers-utils"
 ]

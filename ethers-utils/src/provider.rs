@@ -24,3 +24,7 @@ pub async fn get_ws_provider(url: &str) -> Provider<Ws> {
 pub fn get_http_provider(url: &str) -> Provider<Http> {
   Provider::<Http>::try_from(url).unwrap()
 }
+
+pub async fn get_latest_block(provider: &Provider<Ws>) -> u64 {
+  provider.get_block(BlockNumber::Latest).await.unwrap().unwrap().number.unwrap().as_u64()
+}

@@ -17,7 +17,7 @@ pub fn u64_to_U256(u: u64) -> U256 {
   }
 }
 
-// Example pre-hashed event signature: Transfer(address,address,uint256)
+// Example pre-hashed event signature: "Transfer(address,address,uint256)"
 // Note: uint should be replaced with uint256
 pub fn hash_event_signature(s: &str) -> H256 {
   H256::from(ethers::utils::keccak256(s.as_bytes()))

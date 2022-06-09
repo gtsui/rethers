@@ -16,3 +16,6 @@ pub use time::*;
 
 pub mod logs;
 pub use logs::*;
+
+pub mod types;
+pub use types::*;

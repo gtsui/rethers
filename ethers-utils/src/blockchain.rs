@@ -39,7 +39,7 @@ pub trait BlockchainLogReader {
     topics: Vec<H256>,
     prior_blocks: u64,
     chunk_size: u64
-  ) -> Vec<Log> {
+  ) {
 
     println!("Connecting to blockchain provider...");
     let provider = get_ws_provider(provider_url).await;
@@ -56,7 +56,7 @@ pub trait BlockchainLogReader {
       chunk_size
     ).await;
 
-    self.on_fetched(&provider, logs); 
+    self.on_fetched(&provider, logs).await; 
   }
 
   async fn fetch_logs_historical(
@@ -67,7 +67,7 @@ pub trait BlockchainLogReader {
     start_block: u64,
     end_block: u64,
     chunk_size: u64
-  ) -> Vec<Log> {
+  ) {
 
     println!("Connecting to blockchain provider...");
     let provider = get_ws_provider(provider_url).await;
@@ -82,7 +82,7 @@ pub trait BlockchainLogReader {
       chunk_size
     ).await;
 
-    self.on_fetched(&provider, logs); 
+    self.on_fetched(&provider, logs).await; 
     
   }
   

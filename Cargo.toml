@@ -1,5 +1,21 @@
-[workspace]
+[package]
+name = "rust-ethers-env"
+version = "0.1.0"
+edition = "2021"
+authors = ["tsuigeo <tsuigeo@ensolabs.co>"]
 
+[workspace]
 members = [
   "ethers-utils"
 ]
+
+[dependencies]
+dotenv = "0.15.0"
+ethers = { git = "https://github.com/gakonst/ethers-rs", features = ["ws", "rustls"] }
+tokio = { version = "1", features = ["full"] }
+async-trait = "0.1.56"
+ethers-utils = { path = "./ethers-utils" }
+
+[[example]]
+name = "get_logs"
+path = "examples/get_logs.rs"

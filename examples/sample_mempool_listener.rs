@@ -33,7 +33,7 @@ impl MempoolListener for SampleMempoolListener {
 async fn main() {
 
   let mut sample_mempool_listener = SampleMempoolListener::new();
-
+  
   let provider_url = env_key_prefixed("WS_PROVIDER");
   
   sample_mempool_listener.listen(&provider_url).await;

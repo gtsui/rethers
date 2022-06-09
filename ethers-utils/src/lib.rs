@@ -5,6 +5,9 @@
 pub mod provider;
 pub use provider::*;
 
+pub mod math;
+pub use math::*;
+
 pub mod conversions;
 pub use conversions::*;
 
@@ -19,3 +22,4 @@ pub use logs::*;
 
 pub mod blockchain;
 pub use blockchain::*;
+

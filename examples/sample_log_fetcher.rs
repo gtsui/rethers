@@ -1,4 +1,4 @@
-#[allow(unused)]
+#![allow(unused)]
 
 use async_trait::*;
 use ethers_utils::*;
@@ -36,6 +36,6 @@ async fn main() {
 
   let provider_url = env_key_prefixed("WS_PROVIDER");
 
-  sample_log_fetcher.fetch_logs(&provider_url, vec![address], vec![topic], 5000, 499).await;
+  sample_log_fetcher.fetch_logs_init_provider(&provider_url, vec![address], vec![topic], 5000, 499).await;
   
 }

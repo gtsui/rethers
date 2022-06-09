@@ -63,7 +63,7 @@ pub trait LogFetcher {
     prior_blocks: u64,
     chunk_size: u64
   ) {
-
+    
     let provider = get_ws_provider(provider_url).await;
     self.fetch_logs(
       &provider,
@@ -105,7 +105,11 @@ pub trait LogFetcher {
     end_block: u64,
     chunk_size: u64
   ) {
+
+    println!("Connecting to blockchain provider...");
     let provider = get_ws_provider(provider_url).await;
+    println!("Connected to blockchain provider");
+
     self.fetch_logs_historical(
       &provider,
       addresses,

@@ -11,7 +11,6 @@ pub trait MempoolListener {
     let provider = get_ws_provider(provider_url).await;
     println!("Connected to blockchain provider");
 
-    println!("Starting...");
     self.on_start(&provider).await;
 
     let mut stream = provider.subscribe_pending_txs().await.unwrap();
@@ -30,7 +29,7 @@ pub trait MempoolListener {
 }
 
 #[async_trait]
-pub trait BlockchainLogReader {
+pub trait LogFetcher {
 
   async fn fetch_logs(
     &mut self,

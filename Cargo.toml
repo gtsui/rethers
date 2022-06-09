@@ -17,5 +17,9 @@ async-trait = "0.1.56"
 ethers-utils = { path = "./ethers-utils" }
 
 [[example]]
-name = "get_logs"
-path = "examples/get_logs.rs"
+name = "sample_log_fetcher"
+path = "examples/sample_log_fetcher.rs"
+
+[[example]]
+name = "sample_mempool_listener"
+path = "examples/sample_mempool_listener.rs"

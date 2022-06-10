@@ -11,6 +11,13 @@ impl SampleLogFetcher {
   pub fn new() -> Self {
     SampleLogFetcher {}
   }
+
+  pub async fn run(&mut self) {
+    let address = env_key_prefixed_H160("UNISWAP_V2_FACTORY");
+    let topic = hash_event_signature("PairCreated(address,address,address,uint256)");
+    let provider_url = env_key_prefixed("WS_PROVIDER");   
+    self.fetch_logs_init_provider(&provider_url, vec![address], vec![topic], 5000, 500).await;    
+  }
   
 }
 
@@ -29,13 +36,6 @@ impl LogFetcher for SampleLogFetcher {
 async fn main() {
   
   let mut sample_log_fetcher = SampleLogFetcher::new();
-
-  let address = env_key_prefixed_H160("UNISWAP_V2_FACTORY");
   
-  let topic = hash_event_signature("PairCreated(address,address,address,uint256)");
-
-  let provider_url = env_key_prefixed("WS_PROVIDER");
-
-  sample_log_fetcher.fetch_logs_init_provider(&provider_url, vec![address], vec![topic], 5000, 499).await;
-  
+  sample_log_fetcher.run().await;
 }

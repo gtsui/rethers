@@ -16,9 +16,9 @@ pub async fn get_logs_by_chunk(
   
   while current_block < end_block {
     
-    println!("Getting logs from {} to {}", current_block, current_block + chunk_size);
+    println!("Getting logs from {} to {}", current_block, current_block + chunk_size - 1);
     
-    let filter = create_filter(addresses.clone(), topics.clone(), current_block, current_block + chunk_size);
+    let filter = create_filter(addresses.clone(), topics.clone(), current_block, current_block + chunk_size - 1);
 
     let mut log_chunk = provider.get_logs(&filter).await.unwrap();
 

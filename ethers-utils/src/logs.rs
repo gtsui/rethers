@@ -1,5 +1,5 @@
 use ethers::prelude::*;
-
+use crate::provider::*;
 
 pub async fn get_logs_by_chunk(  
   provider: &Provider<Ws>,
@@ -12,13 +12,29 @@ pub async fn get_logs_by_chunk(
 
   let mut current_block = start_block;
 
+  let latest_block = get_latest_block(&provider).await;
+  
   let mut logs: Vec<Log> = vec![];
+
+  if start_block > latest_block {
+    panic!("start block greater than latest network block {}", latest_block);
+  }
+
+  let end_block = std::cmp::min(end_block, latest_block);
   
   while current_block < end_block {
+
+    let current_start_block = current_block;
+    let current_end_block = std::cmp::min(current_block + chunk_size - 1, end_block);
     
-    println!("Getting logs from {} to {}", current_block, current_block + chunk_size - 1);
+    println!("Getting logs from {} to {}", current_start_block, current_end_block);
     
-    let filter = create_filter(addresses.clone(), topics.clone(), current_block, current_block + chunk_size - 1);
+    let filter = create_filter(
+      addresses.clone(),
+      topics.clone(),
+      current_start_block,
+      current_end_block
+    );
 
     let mut log_chunk = provider.get_logs(&filter).await.unwrap();
 
@@ -26,7 +42,7 @@ pub async fn get_logs_by_chunk(
     
     current_block = current_block + chunk_size;
   }
-
+  
   logs
 }
 

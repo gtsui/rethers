@@ -24,7 +24,7 @@ pub async fn get_logs_by_chunk(
 
     logs.append(&mut log_chunk);
     
-    current_block = current_block + chunk_size + 1;
+    current_block = current_block + chunk_size;
   }
 
   logs

@@ -17,7 +17,7 @@ pub trait MempoolListener {
 
     println!("Listening to mempool...");
     while let Some(tx_hash) = stream.next().await {
-      let maybe_tx = provider.get_transaction(tx_hash).await.unwrap();
+      let maybe_tx = provider.get_transaction(tx_hash).await.unwrap_or_else(|_| None);
       if let Some(tx) = maybe_tx {
         self.on_msg(&provider, tx).await;
       }

@@ -26,6 +26,10 @@ pub fn env_key_U256(key: &str) -> U256 {
   str_to_U256(&key)
 }
 
+pub fn env_key_str(key: &str) -> String {
+  dotenv::var(key).unwrap()
+}
+
 pub fn env_key_u64(key: &str) -> u64 {
   let key = dotenv::var(key).unwrap();
   key.parse::<u64>().unwrap()

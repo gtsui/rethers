@@ -12,7 +12,7 @@ pub fn truncate(a: U256) -> U256 {
   a.checked_div(mantissa()).unwrap()
 }
 
-pub fn abs(a: U256, b: U256) -> U256 {
+pub fn sub_abs(a: U256, b: U256) -> U256 {
   if a.gt(&b) {
     return sub(a,b);
   }else {

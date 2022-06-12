@@ -44,5 +44,5 @@ pub fn mul_truncate(a: U256, b: U256) -> U256 {
 pub fn diff_in_basis_points(a: U256, b: U256) -> U256 {
   let num = mul(sub_abs(a, b), U256::exp10(4));
   let denom = div(add(a,b), u64_to_U256(2));
-  div(div(num, denom), U256::exp10(4))
+  div(num, denom)
 }

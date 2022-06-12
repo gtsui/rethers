@@ -7,6 +7,10 @@ pub fn str_to_H160(s: &str) -> H160 {
   s.parse::<H160>().unwrap()
 }
 
+pub fn str_to_H256(s: &str) -> H256 {
+  s.parse::<H256>().unwrap()
+}
+
 pub fn str_to_U256(s: &str) -> U256 {
   U256::from_dec_str(s).unwrap()
 }

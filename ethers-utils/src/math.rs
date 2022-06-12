@@ -12,6 +12,14 @@ pub fn truncate(a: U256) -> U256 {
   a.checked_div(mantissa()).unwrap()
 }
 
+pub fn abs(a: U256, b: U256) -> U256 {
+  if a.gt(&b) {
+    return sub(a,b);
+  }else {
+    return sub(b,a);
+  }
+}
+
 pub fn add(a: U256, b: U256) -> U256 {
   a.checked_add(b).unwrap()
 }

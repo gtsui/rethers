@@ -5,9 +5,13 @@ use crate::*;
 #[async_trait]
 pub trait MempoolListener {
 
+  async fn on_start(&mut self, provider: &Provider<Ws>);
+
+  async fn on_msg(&mut self, provider: &Provider<Ws>, tx: Transaction);  
+  
   async fn listen(&mut self, provider_url: &str) {
 
-    let provider = get_ws_arc_provider(provider_url).await;
+    let provider = get_ws_provider(provider_url).await;
 
     self.on_start(&provider).await;
 
@@ -21,15 +25,14 @@ pub trait MempoolListener {
       }
     }
   }
-
-  async fn on_start(&mut self, provider: &Provider<Ws>);
-
-  async fn on_msg(&mut self, provider: &Provider<Ws>, tx: Transaction);  
+  
 }
 
 #[async_trait]
 pub trait LogFetcher {
 
+  async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>);
+  
   async fn fetch_logs(
     &mut self,
     provider: &Provider<Ws>,
@@ -105,9 +108,7 @@ pub trait LogFetcher {
     chunk_size: u64
   ) {
 
-    println!("Connecting to blockchain provider...");
     let provider = get_ws_provider(provider_url).await;
-    println!("Connected to blockchain provider");
 
     self.fetch_logs_historical(
       &provider,
@@ -119,5 +120,4 @@ pub trait LogFetcher {
     ).await;
   }
   
-  async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>);
 }

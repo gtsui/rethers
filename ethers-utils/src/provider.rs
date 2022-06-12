@@ -2,17 +2,16 @@ use std::thread;
 use std::time::Duration;
 use ethers::prelude::*;
 use async_recursion::async_recursion;
-use std::sync::*;
 
-pub async fn get_ws_arc_provider(url: &str) -> Arc<Provider<Ws>> {
+pub async fn get_ws_provider(url: &str) -> Provider<Ws> {
   println!("Connecting to blockchain provider...");
-  let provider = get_ws_provider(url).await;
+  let provider = _get_ws_provider_helper(url).await;
   println!("Connected to blockchain provider");
-  Arc::new(provider)
+  provider
 }
 
 #[async_recursion]
-pub async fn get_ws_provider(url: &str) -> Provider<Ws> {
+async fn _get_ws_provider_helper(url: &str) -> Provider<Ws> {
   let result = Provider::<Ws>::connect(url).await;
   let provider = match result {
     Ok(provider) => {

@@ -27,6 +27,11 @@ pub fn hash_event_signature(s: &str) -> H256 {
   H256::from(ethers::utils::keccak256(s.as_bytes()))
 }
 
+pub fn function_selector(s: &str) -> [u8; 4] {
+  let bytes = ethers::utils::keccak256(s.as_bytes());
+  [ bytes[0], bytes[1], bytes[2], bytes[3] ]
+}
+
 pub fn str_to_abi(s: &str) -> ethers::abi::Abi {
   abi::AbiParser::default().parse(&[s]).unwrap()
 }

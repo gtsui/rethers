@@ -7,9 +7,7 @@ pub trait MempoolListener {
 
   async fn listen(&mut self, provider_url: &str) {
 
-    println!("Connecting to blockchain provider...");
-    let provider = get_ws_provider(provider_url).await;
-    println!("Connected to blockchain provider");
+    let provider = get_ws_arc_provider(provider_url).await;
 
     self.on_start(&provider).await;
 

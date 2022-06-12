@@ -41,5 +41,5 @@ pub fn str_to_abi(s: &str) -> ethers::abi::Abi {
 pub fn U256_to_f64(a: U256, base: u32, decimals: u32) -> f64 {
   let divisor = U256::exp10(base as usize);
   let v = div(mul(a, U256::exp10(decimals as usize)), divisor);
-  f64::from(v.as_u32()) / (10.0_f64).powf(f64::from(decimals))
+  (v.as_u64() as f64) / (10.0_f64).powf(f64::from(decimals))
 }

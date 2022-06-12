@@ -41,12 +41,8 @@ pub fn mul_truncate(a: U256, b: U256) -> U256 {
   truncate(mul(a,b))
 }
 
-pub fn is_within_range(a: U256, b: U256, precision: u32) -> bool {
-  let num = mul(sub_abs(a, b), U256::exp10(precision as usize));
+pub fn diff_in_basis_points(a: U256, b: U256) -> U256 {
+  let num = mul(sub_abs(a, b), U256::exp10(4));
   let denom = div(add(a,b), u64_to_U256(2));
-  let pct_diff = div(div(num, denom), U256::exp10(precision as usize));
-  if pct_diff.is_zero() {
-    return true;
-  }
-  return false;
+  div(div(num, denom), U256::exp10(4))
 }

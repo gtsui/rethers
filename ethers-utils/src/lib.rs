@@ -23,3 +23,5 @@ pub use logs::*;
 pub mod blockchain;
 pub use blockchain::*;
 
+pub mod telegram;
+pub use telegram::*;

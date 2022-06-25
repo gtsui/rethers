@@ -15,6 +15,7 @@ ethers = { git = "https://github.com/gakonst/ethers-rs", features = ["ws", "rust
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1.56"
 ethers-utils = { path = "./ethers-utils" }
+teloxide = "0.9"
 
 [[example]]
 name = "sample_log_fetcher"

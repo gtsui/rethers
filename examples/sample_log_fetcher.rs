@@ -13,8 +13,8 @@ impl SampleLogFetcher {
   }
 
   pub async fn run(&mut self) {
-    let address = env_key_prefixed_H160("UNISWAP_V2_FACTORY");
-    let topic = hash_event_signature("PairCreated(address,address,address,uint256)");
+    let address = env_key_prefixed_H160("ERC20");
+    let topic = hash_event_signature("Transfer(address,address,uint256)");
     let provider_url = env_key_prefixed("WS_PROVIDER");   
     self.fetch_logs_init_provider(&provider_url, vec![address], vec![topic], 5000, 500).await;    
   }
@@ -25,8 +25,13 @@ impl SampleLogFetcher {
 impl LogFetcher for SampleLogFetcher {
   
   async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>) {
-    // do work here
-    println!("{:?}", logs);    
+    
+    print_logs(
+      provider,
+      logs,
+      vec![(LogType::U256, "amount")],
+      vec![(LogType::H160, "from"), (LogType::H160, "to")]
+    ).await;
   }
   
 }

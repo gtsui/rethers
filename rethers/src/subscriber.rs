@@ -2,13 +2,12 @@
 
 use ethers::prelude::*;
 use tokio::sync::mpsc::*;
+use std::sync::*;
 use crate::*;
 
-pub async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider_string: String) {
+pub async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
 
   tokio::spawn(async move {
-
-    let provider = get_ws_provider(provider_string.as_str()).await;
     
     let mut stream = provider.subscribe_pending_txs().await.unwrap();
       
@@ -23,10 +22,8 @@ pub async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider_stri
   
 }
 
-pub async fn _subscribe_blocks(tx: Sender<BlockchainMessage>, provider_string:String) {
+pub async fn _subscribe_blocks(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
   tokio::spawn(async move {
-      
-    let provider = get_ws_provider(provider_string.as_str()).await;
     
     let mut stream = provider.subscribe_blocks().await.unwrap();
     

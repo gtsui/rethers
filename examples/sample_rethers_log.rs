@@ -3,6 +3,7 @@
 use async_trait::*;
 use rethers::*;
 use ethers::prelude::*;
+use std::sync::Arc;
 
 struct SampleRethersLog {}
 
@@ -24,7 +25,7 @@ impl SampleRethersLog {
 #[async_trait]
 impl RethersLog for SampleRethersLog {
   
-  async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>) {
+  async fn on_fetched(&mut self, provider: Arc<Provider<Ws>>, logs: Vec<Log>) {
     
     print_logs(
       provider,

@@ -1,9 +1,10 @@
 use ethers::prelude::*;
 use crate::provider::*;
 use crate::time::*;
+use std::sync::Arc;
 
 pub async fn get_logs_by_chunk(  
-  provider: &Provider<Ws>,
+  provider: Arc<Provider<Ws>>,
   addresses: Vec<H160>,
   topics: Vec<H256>,
   start_block: u64,
@@ -13,7 +14,7 @@ pub async fn get_logs_by_chunk(
 
   let mut current_block = start_block;
 
-  let latest_block = get_latest_block(&provider).await;
+  let latest_block = get_latest_block(Arc::clone(&provider)).await;
   
   let mut logs: Vec<Log> = vec![];
 
@@ -71,7 +72,7 @@ pub enum LogType {
   U256
 }
 
-pub async fn print_logs(provider: &Provider<Ws>, logs: Vec<Log>, data_decoder: Vec<(LogType, &str)>, topic_decoder: Vec<(LogType, &str)>) {
+pub async fn print_logs(provider: Arc<Provider<Ws>>, logs: Vec<Log>, data_decoder: Vec<(LogType, &str)>, topic_decoder: Vec<(LogType, &str)>) {
 
   for log in logs.iter() {
     let data = log.data.to_vec();

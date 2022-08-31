@@ -2,32 +2,33 @@
 
 use async_trait::*;
 use ethers::prelude::*;
-use tokio::sync::*;
+use std::sync::Arc;
+use tokio::sync::mpsc;
 use crate::*;
 
 
 #[async_trait]
 pub trait RethersFramework {
 
-  async fn on_start(&mut self, provider: &Provider<Ws>);
+  async fn on_start(&mut self, provider: Arc<Provider<Ws>>);
 
-  async fn on_msg(&mut self, provider: &Provider<Ws>, msg: BlockchainMessage);    
+  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: BlockchainMessage);    
 
   async fn run(&mut self, provider_url: &str) {
 
     let provider = get_ws_provider(provider_url).await;
-
-    self.on_start(&provider).await;
+    
+    self.on_start(Arc::clone(&provider)).await;
     
     let (tx, mut rx) = mpsc::channel(32);
     let tx2 = tx.clone();
     
-    _subscribe_pending_txs(tx, String::from(provider_url)).await;
+    _subscribe_pending_txs(tx, Arc::clone(&provider)).await;
     
-    _subscribe_blocks(tx2, String::from(provider_url)).await;
+    _subscribe_blocks(tx2, Arc::clone(&provider)).await;
     
     while let Some(msg) = rx.recv().await {
-      self.on_msg(&provider, msg).await;
+      self.on_msg(Arc::clone(&provider), msg).await;
     }
   }
   
@@ -37,21 +38,21 @@ pub trait RethersFramework {
 #[async_trait]
 pub trait RethersLog {
 
-  async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>);
+  async fn on_fetched(&mut self, provider: Arc<Provider<Ws>>, logs: Vec<Log>);
   
   async fn fetch_logs(
     &mut self,
-    provider: &Provider<Ws>,
+    provider: Arc<Provider<Ws>>,
     addresses: Vec<H160>,
     topics: Vec<H256>,
     prior_blocks: u64,
     chunk_size: u64
   ) {
 
-    let latest_block = get_latest_block(&provider).await;
+    let latest_block = get_latest_block(Arc::clone(&provider)).await;
     
     let logs = get_logs_by_chunk(
-      &provider,
+      Arc::clone(&provider),
       addresses,
       topics,
       latest_block - prior_blocks,
@@ -59,7 +60,7 @@ pub trait RethersLog {
       chunk_size
     ).await;
     
-    self.on_fetched(&provider, logs).await;     
+    self.on_fetched(Arc::clone(&provider), logs).await;
   }
 
   
@@ -74,7 +75,7 @@ pub trait RethersLog {
     
     let provider = get_ws_provider(provider_url).await;
     self.fetch_logs(
-      &provider,
+      provider,
       addresses,
       topics,
       prior_blocks,
@@ -84,7 +85,7 @@ pub trait RethersLog {
 
   async fn fetch_logs_historical(
     &mut self,
-    provider: &Provider<Ws>,
+    provider: Arc<Provider<Ws>>,
     addresses: Vec<H160>,
     topics: Vec<H256>,
     start_block: u64,
@@ -93,7 +94,7 @@ pub trait RethersLog {
   ) {
 
     let logs = get_logs_by_chunk(
-      &provider,
+      Arc::clone(&provider),
       addresses,
       topics,
       start_block,
@@ -101,7 +102,7 @@ pub trait RethersLog {
       chunk_size
     ).await;
 
-    self.on_fetched(&provider, logs).await; 
+    self.on_fetched(Arc::clone(&provider), logs).await; 
   }
 
   async fn fetch_logs_historical_init_provider(
@@ -117,7 +118,7 @@ pub trait RethersLog {
     let provider = get_ws_provider(provider_url).await;
 
     self.fetch_logs_historical(
-      &provider,
+      provider,
       addresses,
       topics,
       start_block,

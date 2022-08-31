@@ -1,8 +1,9 @@
 #![allow(unused)]
 
 use async_trait::*;
-use rethers::*;
+use std::sync::{Arc};
 use ethers::prelude::*;
+use rethers::*;
 use config::*;
 
 struct SampleRethersFramework {}
@@ -18,11 +19,11 @@ impl SampleRethersFramework {
 #[async_trait]
 impl RethersFramework for SampleRethersFramework {
 
-  async fn on_start(&mut self, provider: &Provider<Ws>) {
+  async fn on_start(&mut self, provider: Arc<Provider<Ws>>) {
     println!("Write initializing code here...");
   }
 
-  async fn on_msg(&mut self, provider: &Provider<Ws>, msg: BlockchainMessage) {
+  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: BlockchainMessage) {
 
     match msg {
       BlockchainMessage::Txn(tx) => {

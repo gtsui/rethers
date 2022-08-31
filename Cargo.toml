@@ -1,12 +1,13 @@
 [package]
-name = "rust-ethers-utils"
+name = "project-rethers"
 version = "0.1.0"
 edition = "2021"
-authors = ["tsuigeo <tsuigeo@ensolabs.co>"]
+authors = ["tsuigeo <tsui.geoffrey@gmail.com>"]
 
 [workspace]
 members = [
-  "ethers-utils"
+  "config",
+  "rethers"
 ]
 
 [dependencies]
@@ -14,13 +15,10 @@ dotenv = "0.15.0"
 ethers = { git = "https://github.com/gakonst/ethers-rs", features = ["ws", "rustls"] }
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1.56"
-ethers-utils = { path = "./ethers-utils" }
+config = { path = "./config" }
+rethers = { path = "./rethers" }
 teloxide = "0.9"
 
 [[example]]
-name = "sample_log_fetcher"
-path = "examples/sample_log_fetcher.rs"
-
-[[example]]
-name = "sample_mempool_listener"
-path = "examples/sample_mempool_listener.rs"
+name = "sample_rethers_log"
+path = "examples/sample_rethers_log.rs"

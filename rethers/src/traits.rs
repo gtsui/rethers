@@ -1,35 +1,41 @@
+#![allow(warnings, unused)]
+
 use async_trait::*;
 use ethers::prelude::*;
+use tokio::sync::*;
 use crate::*;
 
+
 #[async_trait]
-pub trait MempoolListener {
+pub trait RethersFramework {
 
   async fn on_start(&mut self, provider: &Provider<Ws>);
 
-  async fn on_msg(&mut self, provider: &Provider<Ws>, tx: Transaction);  
-  
-  async fn listen(&mut self, provider_url: &str) {
+  async fn on_msg(&mut self, provider: &Provider<Ws>, msg: BlockchainMessage);    
+
+  async fn run(&mut self, provider_url: &str) {
 
     let provider = get_ws_provider(provider_url).await;
 
     self.on_start(&provider).await;
-
-    let mut stream = provider.subscribe_pending_txs().await.unwrap();
-
-    println!("[{}] Listening to mempool...", fmt_timestamp(current_time()));
-    while let Some(tx_hash) = stream.next().await {
-      let maybe_tx = provider.get_transaction(tx_hash).await.unwrap_or_else(|_| None);
-      if let Some(tx) = maybe_tx {
-        self.on_msg(&provider, tx).await;
-      }
+    
+    let (tx, mut rx) = mpsc::channel(32);
+    let tx2 = tx.clone();
+    
+    _subscribe_pending_txs(tx, String::from(provider_url)).await;
+    
+    _subscribe_blocks(tx2, String::from(provider_url)).await;
+    
+    while let Some(msg) = rx.recv().await {
+      self.on_msg(&provider, msg).await;
     }
   }
   
 }
 
+
 #[async_trait]
-pub trait LogFetcher {
+pub trait RethersLog {
 
   async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>);
   

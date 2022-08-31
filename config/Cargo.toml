@@ -1,5 +1,5 @@
 [package]
-name = "ethers-utils"
+name = "config"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,9 +7,5 @@ edition = "2021"
 
 [dependencies]
 dotenv = "0.15.0"
+rethers = { path = "../rethers" }
 ethers = { git = "https://github.com/gakonst/ethers-rs", features = ["ws", "rustls"] }
-tokio = { version = "1", features = ["full"] }
-async-trait = "0.1.56"
-async-recursion = "1.0.0"
-chrono = "0.4.19"
-teloxide = "0.9"

@@ -2,11 +2,12 @@ use std::thread;
 use std::time::Duration;
 use ethers::prelude::*;
 use async_recursion::async_recursion;
+use crate::*;
 
 pub async fn get_ws_provider(url: &str) -> Provider<Ws> {
-  println!("Connecting to blockchain provider...");
+  println!("[{}] Connecting to blockchain provider...", fmt_timestamp(current_time()));
   let provider = _get_ws_provider_helper(url).await;
-  println!("Connected to blockchain provider");
+  println!("[{} Connected to blockchain provider", fmt_timestamp(current_time()));
   provider
 }
 

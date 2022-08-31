@@ -496,6 +496,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "config"
+version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "ethers",
+ "rethers",
+]
+
+[[package]]
 name = "console"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1180,19 +1189,6 @@ dependencies = [
  "tokio",
  "tracing",
  "walkdir",
-]
-
-[[package]]
-name = "ethers-utils"
-version = "0.1.0"
-dependencies = [
- "async-recursion",
- "async-trait",
- "chrono",
- "dotenv",
- "ethers",
- "teloxide",
- "tokio",
 ]
 
 [[package]]
@@ -2362,6 +2358,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "project-rethers"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "config",
+ "dotenv",
+ "ethers",
+ "rethers",
+ "teloxide",
+ "tokio",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2535,6 +2544,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "rethers"
+version = "0.1.0"
+dependencies = [
+ "async-recursion",
+ "async-trait",
+ "chrono",
+ "dotenv",
+ "ethers",
+ "teloxide",
+ "tokio",
+]
+
+[[package]]
 name = "rfc6979"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2590,18 +2612,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "rust-ethers-utils"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "dotenv",
- "ethers",
- "ethers-utils",
- "teloxide",
- "tokio",
 ]
 
 [[package]]

@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 #![allow(non_snake_case)]
 
-
 pub mod provider;
 pub use provider::*;
 
@@ -20,8 +19,14 @@ pub use time::*;
 pub mod logs;
 pub use logs::*;
 
-pub mod blockchain;
-pub use blockchain::*;
+pub mod types;
+pub use types::*;
+
+pub mod subscriber;
+pub use subscriber::*;
+
+pub mod traits;
+pub use traits::*;
 
 pub mod telegram;
 pub use telegram::*;

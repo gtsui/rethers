@@ -1,19 +1,19 @@
 #![allow(unused)]
 
 use async_trait::*;
-use ethers_utils::*;
+use rethers::*;
 use ethers::prelude::*;
 
-struct SampleLogFetcher {}
+struct SampleRethersLog {}
 
-impl SampleLogFetcher {
+impl SampleRethersLog {
 
   pub fn new() -> Self {
-    SampleLogFetcher {}
+    SampleRethersLog {}
   }
 
   pub async fn run(&mut self) {
-    let address = env_key_prefixed_H160("ERC20");
+    let address = str_to_H160("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"); //USDC ERC20
     let topic = hash_event_signature("Transfer(address,address,uint256)");
     let provider_url = env_key_prefixed("WS_PROVIDER");   
     self.fetch_logs_init_provider(&provider_url, vec![address], vec![topic], 5000, 500).await;    
@@ -22,7 +22,7 @@ impl SampleLogFetcher {
 }
 
 #[async_trait]
-impl LogFetcher for SampleLogFetcher {
+impl RethersLog for SampleRethersLog {
   
   async fn on_fetched(&mut self, provider: &Provider<Ws>, logs: Vec<Log>) {
     
@@ -40,7 +40,7 @@ impl LogFetcher for SampleLogFetcher {
 #[tokio::main]
 async fn main() {
   
-  let mut sample_log_fetcher = SampleLogFetcher::new();
+  let mut sample_rethers_log = SampleRethersLog::new();
   
-  sample_log_fetcher.run().await;
+  sample_rethers_log.run().await;
 }

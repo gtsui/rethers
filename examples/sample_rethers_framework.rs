@@ -33,12 +33,8 @@ impl RethersFramework for SampleRethersFramework {
         println!("{:?}", b);
       }
     }
-  }
-}
 
-async fn say_world() {
-  std::thread::sleep(std::time::Duration::from_millis(5000));
-  println!("world");
+  }
 }
 
 

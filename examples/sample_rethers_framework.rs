@@ -27,13 +27,13 @@ impl RethersFramework for SampleRethersFramework {
 
     match msg {
       BlockchainMessage::PendingTx(tx) => {
-        println!("Pending Tx Hash: {:?}", tx.hash);
+        println!("[{}] Pending Tx Hash: {:?}", current_time_str(), tx.hash);
       },
       BlockchainMessage::BlockWithTxs(b) => {
-        println!("Block Hash: {:?}", b.hash);
+        println!("[{}] Block Hash: {:?}", current_time_str(), b.hash);
       },
       BlockchainMessage::Log(l) => {
-        println!("Log Tx Hash: {:?}", l.transaction_hash);
+        println!("[{}] Log Tx Hash: {:?}", current_time_str(), l.transaction_hash);
       }
     }
 

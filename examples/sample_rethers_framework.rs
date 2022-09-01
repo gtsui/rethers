@@ -27,13 +27,13 @@ impl RethersFramework for SampleRethersFramework {
 
     match msg {
       BlockchainMessage::PendingTx(tx) => {
-        //println!("{:?}", tx);
+        println!("Pending Tx Hash: {:?}", tx.hash);
       },
       BlockchainMessage::BlockWithTxs(b) => {
-        //println!("{:?}", b.transactions.len());
+        println!("Block Hash: {:?}", b.hash);
       },
       BlockchainMessage::Log(l) => {
-        println!("{:?}", l);
+        println!("Log Tx Hash: {:?}", l.transaction_hash);
       }
     }
 
@@ -55,8 +55,8 @@ async fn main() {
   let filter = create_filter(addresses, topics);
   
   let opts = FrameworkOptions::new(
-    false,
-    false,
+    true,
+    true,
     vec![filter]
   );
   

@@ -20,7 +20,7 @@ pub trait RethersFramework {
     
     self.on_start(Arc::clone(&provider)).await;
     
-    let (tx, mut rx) = mpsc::channel(32);
+    let (tx, mut rx) = mpsc::channel(128);
 
     if opts.subscribe_pending_txs {
       let tx_pending_txs = tx.clone();

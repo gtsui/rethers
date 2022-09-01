@@ -5,7 +5,7 @@ use tokio::sync::mpsc::*;
 use std::sync::*;
 use crate::*;
 
-pub async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
+pub(crate) async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
 
   tokio::spawn(async move {
     
@@ -14,7 +14,7 @@ pub async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider: Arc
     while let Some(txn_hash) = stream.next().await {
       let maybe_txn = provider.get_transaction(txn_hash).await.unwrap_or_else(|_| None);
       if let Some(txn) = maybe_txn {
-        let msg = BlockchainMessage::Txn(txn);
+        let msg = BlockchainMessage::PendingTx(txn);
         tx.send(msg).await;
       }
     }
@@ -22,15 +22,25 @@ pub async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider: Arc
   
 }
 
-pub async fn _subscribe_blocks(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
+pub(crate) async fn _subscribe_blocks(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
+
   tokio::spawn(async move {
     
-    let mut stream = provider.subscribe_blocks().await.unwrap();
-    
-    while let Some(block) = stream.next().await {
-      let msg = BlockchainMessage::Blk(block);
-      tx.send(msg).await;
-    }
-    
+    let mut stream = provider.subscribe_blocks().await.unwrap();    
+    while let Some(block_header) = stream.next().await {
+      let maybe_block_with_txs = _block_header_to_block(Arc::clone(&provider), block_header).await;      
+      if let Some(block_with_txs) = maybe_block_with_txs {
+          tx.send(BlockchainMessage::BlockWithTxs(block_with_txs)).await;
+      }                      
+    }    
   });
+}
+
+async fn _block_header_to_block(provider: Arc<Provider<Ws>>, block_header: Block<H256>) -> Option<Block<Transaction>> {
+  match block_header.hash {
+    Some(block_hash) => {
+      provider.get_block_with_txs(block_hash).await.unwrap_or_else(|_| None)   
+    }
+    _ => None
+  }
 }

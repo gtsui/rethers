@@ -26,11 +26,11 @@ impl RethersFramework for SampleRethersFramework {
   async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: BlockchainMessage) {
 
     match msg {
-      BlockchainMessage::Txn(tx) => {
-        println!("{:?}", tx);
+      BlockchainMessage::PendingTx(tx) => {
+        //println!("{:?}", tx);
       },
-      BlockchainMessage::Blk(b) => {
-        println!("{:?}", b);
+      BlockchainMessage::BlockWithTxs(b) => {
+        println!("{:?}", b.transactions.len());
       }
     }
 

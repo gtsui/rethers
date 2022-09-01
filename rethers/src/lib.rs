@@ -22,8 +22,8 @@ pub use logs::*;
 pub mod types;
 pub use types::*;
 
-pub mod subscriber;
-pub use subscriber::*;
+pub(crate) mod subscriber;
+pub(crate) use subscriber::*;
 
 pub mod traits;
 pub use traits::*;

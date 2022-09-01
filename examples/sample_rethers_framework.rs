@@ -13,7 +13,18 @@ impl SampleRethersFramework {
   pub fn new() -> Self {
     SampleRethersFramework {}
   }
-  
+
+  async fn pending_tx_handler(&mut self, provider: Arc<Provider<Ws>>, tx: Transaction) {
+    println!("[{}] Pending Tx Hash: {:?}", current_time_str(), tx.hash);
+  }
+
+  async fn block_with_txs_handler(&mut self, provider: Arc<Provider<Ws>>, block: Block<Transaction>) {
+    println!("[{}] Block Hash: {:?}", current_time_str(), block.hash);
+  }
+
+  async fn log_handler(&mut self, provider: Arc<Provider<Ws>>, log: Log) {
+    println!("[{}] Log Tx Hash: {:?}", current_time_str(), log.transaction_hash);
+  }
 }
 
 #[async_trait]
@@ -27,13 +38,13 @@ impl RethersFramework for SampleRethersFramework {
 
     match msg {
       BlockchainMessage::PendingTx(tx) => {
-        println!("[{}] Pending Tx Hash: {:?}", current_time_str(), tx.hash);
+        self.pending_tx_handler(Arc::clone(&provider), tx).await;
       },
-      BlockchainMessage::BlockWithTxs(b) => {
-        println!("[{}] Block Hash: {:?}", current_time_str(), b.hash);
+      BlockchainMessage::BlockWithTxs(block) => {
+        self.block_with_txs_handler(Arc::clone(&provider), block).await;
       },
-      BlockchainMessage::Log(l) => {
-        println!("[{}] Log Tx Hash: {:?}", current_time_str(), l.transaction_hash);
+      BlockchainMessage::Log(log) => {
+        self.log_handler(Arc::clone(&provider), log).await;
       }
     }
 

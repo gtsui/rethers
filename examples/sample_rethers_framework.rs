@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use async_trait::*;
-use std::sync::{Arc};
+use std::sync::Arc;
 use ethers::prelude::*;
 use rethers::*;
 use config::*;
@@ -30,7 +30,10 @@ impl RethersFramework for SampleRethersFramework {
         //println!("{:?}", tx);
       },
       BlockchainMessage::BlockWithTxs(b) => {
-        println!("{:?}", b.transactions.len());
+        //println!("{:?}", b.transactions.len());
+      },
+      BlockchainMessage::Log(l) => {
+        println!("{:?}", l);
       }
     }
 
@@ -45,6 +48,18 @@ async fn main() {
   
   let mut sample_rethers_framework = SampleRethersFramework::new();
 
-  sample_rethers_framework.run(&config.PROVIDER_URL).await;
+  let addresses = vec![str_to_H160("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")];
+
+  let topics = vec![hash_event_signature("Transfer(address,address,uint256)")];
+  
+  let filter = create_filter(addresses, topics);
+  
+  let opts = FrameworkOptions::new(
+    false,
+    false,
+    vec![filter]
+  );
+  
+  sample_rethers_framework.run(&config.PROVIDER_URL, opts).await;
 
 }

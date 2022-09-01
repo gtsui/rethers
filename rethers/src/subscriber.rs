@@ -5,7 +5,7 @@ use tokio::sync::mpsc::*;
 use std::sync::*;
 use crate::*;
 
-pub(crate) async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
+pub(crate) async fn _subscribe_pending_txs(provider: Arc<Provider<Ws>>, tx: Sender<BlockchainMessage>) {
 
   tokio::spawn(async move {
     
@@ -22,11 +22,12 @@ pub(crate) async fn _subscribe_pending_txs(tx: Sender<BlockchainMessage>, provid
   
 }
 
-pub(crate) async fn _subscribe_blocks(tx: Sender<BlockchainMessage>, provider: Arc<Provider<Ws>>) {
+pub(crate) async fn _subscribe_blocks(provider: Arc<Provider<Ws>>, tx: Sender<BlockchainMessage>) {
 
   tokio::spawn(async move {
     
     let mut stream = provider.subscribe_blocks().await.unwrap();    
+
     while let Some(block_header) = stream.next().await {
       let maybe_block_with_txs = _block_header_to_block(Arc::clone(&provider), block_header).await;      
       if let Some(block_with_txs) = maybe_block_with_txs {
@@ -43,4 +44,17 @@ async fn _block_header_to_block(provider: Arc<Provider<Ws>>, block_header: Block
     }
     _ => None
   }
+}
+
+pub(crate) async fn _subscribe_logs(provider: Arc<Provider<Ws>>, tx: Sender<BlockchainMessage>, filter: Filter) {
+
+  tokio::spawn(async move {
+
+    let mut stream = provider.subscribe_logs(&filter).await.unwrap();
+
+    while let Some(log) = stream.next().await {
+      tx.send(BlockchainMessage::Log(log)).await;
+    }
+    
+  });  
 }

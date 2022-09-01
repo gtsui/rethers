@@ -14,18 +14,28 @@ pub trait RethersFramework {
 
   async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: BlockchainMessage);    
 
-  async fn run(&mut self, provider_url: &str) {
+  async fn run(&mut self, provider_url: &str, opts: FrameworkOptions) {
 
     let provider = get_ws_provider(provider_url).await;
     
     self.on_start(Arc::clone(&provider)).await;
     
     let (tx, mut rx) = mpsc::channel(32);
-    let tx2 = tx.clone();
-    
-    _subscribe_pending_txs(tx, Arc::clone(&provider)).await;
-    
-    _subscribe_blocks(tx2, Arc::clone(&provider)).await;
+
+    if opts.subscribe_pending_txs {
+      let tx_pending_txs = tx.clone();
+      _subscribe_pending_txs(Arc::clone(&provider), tx_pending_txs).await;
+    }
+
+    if opts.subscribe_blocks {
+      let tx_blocks = tx.clone();
+      _subscribe_blocks(Arc::clone(&provider), tx_blocks).await;
+    }
+
+    for filter in opts.log_filters {
+      let tx_logs = tx.clone();
+      _subscribe_logs(Arc::clone(&provider), tx_logs, filter).await;
+    }
     
     while let Some(msg) = rx.recv().await {
       self.on_msg(Arc::clone(&provider), msg).await;

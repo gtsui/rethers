@@ -1,6 +1,6 @@
 use ethers::prelude::*;
 use crate::provider::*;
-use crate::time::*;
+use crate::*;
 use std::sync::Arc;
 
 pub async fn get_logs_by_chunk(  
@@ -31,7 +31,7 @@ pub async fn get_logs_by_chunk(
     
     println!("Getting logs from {} to {}", current_start_block, current_end_block);
     
-    let filter = create_filter(
+    let filter = create_historical_filter(
       addresses.clone(),
       topics.clone(),
       current_start_block,
@@ -51,6 +51,17 @@ pub async fn get_logs_by_chunk(
 
 pub fn create_filter(
   addresses: Vec<H160>,
+  topics: Vec<H256>
+) -> Filter {
+
+  Filter::new()
+    .address(ValueOrArray::Array(addresses))
+    .topic0(ValueOrArray::Array(topics))
+  
+}
+
+pub fn create_historical_filter(
+  addresses: Vec<H160>,
   topics: Vec<H256>,
   start_block: u64,
   end_block: u64
@@ -62,14 +73,6 @@ pub fn create_filter(
     .address(ValueOrArray::Array(addresses))
     .topic0(ValueOrArray::Array(topics))
              
-}
-
-
-#[derive(PartialEq,Eq)]
-pub enum LogType {
-  H160,
-  H256,
-  U256
 }
 
 pub async fn print_logs(provider: Arc<Provider<Ws>>, logs: Vec<Log>, data_decoder: Vec<(LogType, &str)>, topic_decoder: Vec<(LogType, &str)>) {

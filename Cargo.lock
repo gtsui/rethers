@@ -507,7 +507,7 @@ dependencies = [
  "k256",
  "lazy_static",
  "serde",
- "sha2 0.10.3",
+ "sha2 0.10.5",
  "thiserror",
 ]
 
@@ -524,7 +524,7 @@ dependencies = [
  "hmac",
  "pbkdf2 0.11.0",
  "rand",
- "sha2 0.10.3",
+ "sha2 0.10.5",
  "thiserror",
 ]
 
@@ -544,7 +544,7 @@ dependencies = [
  "ripemd",
  "serde",
  "serde_derive",
- "sha2 0.10.3",
+ "sha2 0.10.5",
  "sha3",
  "thiserror",
 ]
@@ -972,7 +972,7 @@ dependencies = [
  "scrypt",
  "serde",
  "serde_json",
- "sha2 0.10.3",
+ "sha2 0.10.5",
  "sha3",
  "thiserror",
  "uuid",
@@ -1209,7 +1209,7 @@ dependencies = [
  "ethers-core",
  "hex",
  "rand",
- "sha2 0.10.3",
+ "sha2 0.10.5",
  "thiserror",
 ]
 
@@ -1875,7 +1875,7 @@ dependencies = [
  "cfg-if",
  "ecdsa",
  "elliptic-curve",
- "sha2 0.10.3",
+ "sha2 0.10.5",
  "sha3",
 ]
 
@@ -1956,9 +1956,9 @@ checksum = "a3e378b66a060d48947b590737b30a1be76706c8dd7b8ba0f2fe3989c68a853f"
 
 [[package]]
 name = "md-5"
-version = "0.10.2"
+version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "274fd6bd98a3c75c9515d9393b063099f60f9b47f09ee20a34fd76287fd017f4"
+checksum = "66b48670c893079d3c2ed79114e3644b7004df1c361a4e0ad52e2e6940d07c3d"
 dependencies = [
  "digest 0.10.3",
 ]
@@ -2091,9 +2091,9 @@ checksum = "830b246a0e5f20af87141b25c173cd1b609bd7779a4617d6ec582abaf90870f3"
 
 [[package]]
 name = "once_cell"
-version = "1.13.1"
+version = "1.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "074864da206b4973b84eb91683020dbefd6a8c3f0f38e054d93954e891935e4e"
+checksum = "2f7254b99e31cad77da24b08ebf628882739a608578bb1bcdfc1f9c21260d7c0"
 
 [[package]]
 name = "opaque-debug"
@@ -2269,7 +2269,7 @@ dependencies = [
  "digest 0.10.3",
  "hmac",
  "password-hash 0.3.2",
- "sha2 0.10.3",
+ "sha2 0.10.5",
 ]
 
 [[package]]
@@ -2281,7 +2281,7 @@ dependencies = [
  "digest 0.10.3",
  "hmac",
  "password-hash 0.4.2",
- "sha2 0.10.3",
+ "sha2 0.10.5",
 ]
 
 [[package]]
@@ -2841,7 +2841,7 @@ dependencies = [
  "hmac",
  "pbkdf2 0.11.0",
  "salsa20",
- "sha2 0.10.3",
+ "sha2 0.10.5",
 ]
 
 [[package]]
@@ -2984,9 +2984,9 @@ dependencies = [
 
 [[package]]
 name = "sha1"
-version = "0.10.2"
+version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5cf2781a4ca844dd4f9b608a1791eea19830df0ad3cdd9988cd05f1c66ccb63a"
+checksum = "006769ba83e921b3085caa8334186b00cf92b4cb1a6cf4632fbccc8eff5c7549"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -3020,9 +3020,9 @@ dependencies = [
 
 [[package]]
 name = "sha2"
-version = "0.10.3"
+version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "899bf02746a2c92bf1053d9327dadb252b01af1f81f90cdb902411f518bc7215"
+checksum = "cf9db03534dff993187064c4e0c05a5708d2a9728ace9a8959b77bedf415dac5"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -3031,9 +3031,9 @@ dependencies = [
 
 [[package]]
 name = "sha3"
-version = "0.10.2"
+version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a31480366ec990f395a61b7c08122d99bd40544fdb5abcfc1b06bb29994312c"
+checksum = "eaedf34ed289ea47c2b741bb72e5357a209512d67bcd4bda44359e5bf0470f56"
 dependencies = [
  "digest 0.10.3",
  "keccak",
@@ -3412,9 +3412,9 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
-version = "1.20.1"
+version = "1.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a8325f63a7d4774dd041e363b2409ed1c5cbbd0f867795e661df066b2b0a581"
+checksum = "89797afd69d206ccd11fb0ea560a44bbb87731d020670e79416d442919257d42"
 dependencies = [
  "autocfg",
  "bytes",

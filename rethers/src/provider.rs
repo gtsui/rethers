@@ -17,11 +17,6 @@ pub fn get_signer_middleware<M: Middleware>(provider: M, key: &str, chain_id: u6
   SignerMiddleware::new(provider, wallet)
 }
 
-pub fn get_nonce_manager_middleware<M: Signer + Middleware>(provider: M) -> NonceManagerMiddleware<M> {
-  let address = provider.address().clone();
-  NonceManagerMiddleware::new(provider, address)
-}
-
 #[async_recursion]
 async fn _get_ws_provider_helper(url: &str) -> Arc<Provider<Ws>> {
   let result = Provider::<Ws>::connect(url).await;

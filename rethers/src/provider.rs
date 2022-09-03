@@ -8,7 +8,7 @@ use crate::*;
 pub async fn get_ws_provider(url: &str) -> Arc<Provider<Ws>> {
   println!("[{}] Connecting to blockchain provider...", current_time_str());
   let provider = _get_ws_provider_helper(url).await;
-  println!("[{} Connected to blockchain provider", current_time_str());
+  println!("[{}] Connected to blockchain provider", current_time_str());
   provider
 }
 

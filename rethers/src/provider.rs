@@ -1,7 +1,7 @@
 use std::thread;
 use std::time::Duration;
-use std::sync::Arc;
-use ethers::prelude::*;
+use std::{str::FromStr, sync::Arc};
+use ethers::{prelude::*, core::k256::ecdsa::SigningKey};
 use async_recursion::async_recursion;
 use crate::*;
 
@@ -10,6 +10,16 @@ pub async fn get_ws_provider(url: &str) -> Arc<Provider<Ws>> {
   let provider = _get_ws_provider_helper(url).await;
   println!("[{}] Connected to blockchain provider", current_time_str());
   provider
+}
+
+pub fn get_signer_middleware<M: Middleware>(provider: M, key: &str, chain_id: u64) -> SignerMiddleware<M, Wallet<SigningKey>> {
+  let wallet = Wallet::from_str(key).unwrap().with_chain_id(chain_id);
+  SignerMiddleware::new(provider, wallet)
+}
+
+pub fn get_nonce_manager_middleware<M: Signer + Middleware>(provider: M) {
+  let address = provider.address().clone();
+  NonceManagerMiddleware::new(provider, address);  
 }
 
 #[async_recursion]

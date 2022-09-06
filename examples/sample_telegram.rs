@@ -1,4 +1,4 @@
-use ethers_utils::*;
+use rethers::*;
 
 #[tokio::main]
 async fn main() {

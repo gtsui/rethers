@@ -22,6 +22,8 @@ impl Config {
   pub fn env_to_chainid(env: &str) -> u64 {
     if env == "MAINNET" {
       return 1;
+    } else if env == "GOERLI" {
+      return 5;
     } else if env == "BSC" {
       return 56;
     } else if env == "POLYGON" {
@@ -36,7 +38,9 @@ impl Config {
       return 1284;
     } else if env == "AVAX" {
       return 43114;
-    }else {
+    } else if env == "MUMBAI" {
+      return 80001;
+    } else {
       return 0;
     }
   }

@@ -3,12 +3,9 @@ use std::time::Duration;
 use std::{str::FromStr, sync::Arc};
 use ethers::{prelude::*, core::k256::ecdsa::SigningKey};
 use async_recursion::async_recursion;
-use crate::*;
 
 pub async fn get_ws_provider(url: &str) -> Arc<Provider<Ws>> {
-  println!("[{}] Connecting to blockchain provider...", current_time_str());
   let provider = _get_ws_provider_helper(url).await;
-  println!("[{}] Connected to blockchain provider", current_time_str());
   provider
 }
 
@@ -33,10 +30,10 @@ async fn _get_ws_provider_helper(url: &str) -> Arc<Provider<Ws>> {
   provider
 }
 
-pub fn get_http_provider(url: &str) -> Provider<Http> {
-  Provider::<Http>::try_from(url).unwrap()
+pub fn get_http_provider(url: &str) -> Arc<Provider<Http>> {
+  Arc::new(Provider::<Http>::try_from(url).unwrap())
 }
 
-pub async fn get_latest_block(provider: Arc<Provider<Ws>>) -> u64 {
+pub async fn get_latest_block<T: JsonRpcClient>(provider: Arc<Provider<T>>) -> u64 {
   provider.get_block(BlockNumber::Latest).await.unwrap().unwrap().number.unwrap().as_u64()
 }

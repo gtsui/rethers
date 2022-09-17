@@ -3,8 +3,8 @@ use crate::provider::*;
 use crate::*;
 use std::sync::Arc;
 
-pub async fn get_logs_by_chunk(  
-  provider: Arc<Provider<Ws>>,
+pub async fn get_logs_by_chunk<T: JsonRpcClient>(  
+  provider: Arc<Provider<T>>,
   addresses: Vec<H160>,
   topics: Vec<H256>,
   start_block: u64,
@@ -75,7 +75,12 @@ pub fn create_historical_filter(
              
 }
 
-pub async fn print_logs(provider: Arc<Provider<Ws>>, logs: Vec<Log>, data_decoder: Vec<(LogType, &str)>, topic_decoder: Vec<(LogType, &str)>) {
+pub async fn print_logs<T: JsonRpcClient>(
+  provider: Arc<Provider<T>>,
+  logs: Vec<Log>,
+  data_decoder: Vec<(LogType, &str)>,
+  topic_decoder: Vec<(LogType, &str)>
+) {
 
   for log in logs.iter() {
     let data = log.data.to_vec();

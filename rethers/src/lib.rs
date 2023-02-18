@@ -30,3 +30,6 @@ pub use traits::*;
 
 pub mod telegram;
 pub use telegram::*;
+
+pub mod data_query;
+pub use data_query::*;

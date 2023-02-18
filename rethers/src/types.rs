@@ -29,7 +29,7 @@ pub enum BlockchainMessage {
   Log(ethers::types::Log)
 }
 
-#[derive(PartialEq,Eq)]
+#[derive(Debug,Clone,PartialEq,Eq)]
 pub enum LogType {
   H160,
   H256,

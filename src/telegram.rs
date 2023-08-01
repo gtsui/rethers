@@ -1,5 +1,4 @@
-use std::thread;
-use std::time::Duration;
+use std::{thread, time::Duration};
 use teloxide::{prelude::*, types::Recipient};
 use async_recursion::async_recursion;
 

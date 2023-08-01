@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 dotenv = "0.15.0"
-rethers = { path = "../rethers" }
 ethers = { git = "https://github.com/gakonst/ethers-rs", features = ["ws", "rustls"] }
+rethers = { path = "../" }

@@ -4,7 +4,6 @@ use async_trait::*;
 use std::sync::Arc;
 use ethers::prelude::*;
 use rethers::*;
-use config::*;
 
 struct SampleRethersFramework {}
 
@@ -34,16 +33,16 @@ impl RethersFramework for SampleRethersFramework {
     println!("Write initializing code here...");
   }
 
-  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: BlockchainMessage) {
+  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: EventType) {
 
     match msg {
-      BlockchainMessage::PendingTx(tx) => {
+      EventType::PendingTx(tx) => {
         self.pending_tx_handler(Arc::clone(&provider), tx).await;
       },
-      BlockchainMessage::BlockWithTxs(block) => {
+      EventType::Block(block) => {
         self.block_with_txs_handler(Arc::clone(&provider), block).await;
       },
-      BlockchainMessage::Log(log) => {
+      EventType::Log(log) => {
         self.log_handler(Arc::clone(&provider), log).await;
       }
     }
@@ -54,14 +53,12 @@ impl RethersFramework for SampleRethersFramework {
 
 #[tokio::main]
 async fn main() {
-
-  let config = Config::new();
   
   let mut sample_rethers_framework = SampleRethersFramework::new();
 
   let addresses = vec![str_to_H160("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")];
 
-  let topics = vec![hash_event_signature("Transfer(address,address,uint256)")];
+  let topics = vec![event_signature("Transfer(address,address,uint256)")];
   
   let filter = create_filter(addresses, topics);
   
@@ -71,6 +68,6 @@ async fn main() {
     vec![filter]
   );
   
-  sample_rethers_framework.run(&config.PROVIDER_URL, opts).await;
+  sample_rethers_framework.run("wss://...", opts).await;
 
 }

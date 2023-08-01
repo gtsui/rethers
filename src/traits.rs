@@ -12,7 +12,7 @@ pub trait RethersFramework {
 
   async fn on_start(&mut self, provider: Arc<Provider<Ws>>);
 
-  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: BlockchainMessage);    
+  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: EventType);    
 
   async fn run(&mut self, provider_url: &str, opts: FrameworkOptions) {
 

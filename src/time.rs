@@ -1,5 +1,5 @@
-use chrono::prelude::*;
 use std::time::{UNIX_EPOCH, Duration};
+use chrono::prelude::*;
 
 pub fn current_time_str() -> String {
   return fmt_timestamp(current_time_secs())

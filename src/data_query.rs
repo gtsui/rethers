@@ -66,7 +66,7 @@ pub async fn _get_result_string(
 
   let provider = get_ws_provider(provider_url).await;
 
-  let topic_hash = hash_event_signature(topic);
+  let topic_hash = event_signature(topic);
   
   let logs = get_logs_by_chunk(
     Arc::clone(&provider),

@@ -23,9 +23,9 @@ impl FrameworkOptions {
 }
 
 #[derive(Debug)]
-pub enum BlockchainMessage {
+pub enum EventType {
   PendingTx(ethers::types::Transaction),
-  BlockWithTxs(ethers::types::Block<ethers::types::Transaction>),
+  Block(ethers::types::Block<ethers::types::Transaction>),
   Log(ethers::types::Log)
 }
 

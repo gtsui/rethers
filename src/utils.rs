@@ -43,16 +43,16 @@ pub fn U256_to_f64(a: U256, base: u32, decimals: u32) -> f64 {
   (v.as_u64() as f64) / (10.0_f64).powf(f64::from(decimals))
 }
 
-pub fn mantissa() -> U256 {
-  U256::exp10(18)
+pub fn mantissa(decimals: usize) -> U256 {
+  U256::exp10(decimals)
 }
 
 pub fn zero() -> U256 {
   U256::zero()
 }
 
-pub fn truncate(a: U256) -> U256 {
-  a.checked_div(mantissa()).unwrap()
+pub fn truncate(a: U256, decimals: usize) -> U256 {
+  a.checked_div(mantissa(decimals)).unwrap()
 }
 
 pub fn sub_abs(a: U256, b: U256) -> U256 {
@@ -79,8 +79,8 @@ pub fn div(a: U256, b: U256) -> U256 {
   a.checked_div(b).unwrap()
 }
 
-pub fn mul_truncate(a: U256, b: U256) -> U256 {
-  truncate(mul(a,b))
+pub fn mul_truncate(a: U256, b: U256, decimals: usize) -> U256 {
+  truncate(mul(a,b), decimals)
 }
 
 // Returns the difference between A and B in basis points (ie 100 = 100%)

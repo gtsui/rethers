@@ -1,9 +1,6 @@
 #![allow(dead_code)]
 #![allow(non_snake_case)]
 
-pub mod data_query;
-pub use data_query::*;
-
 pub mod env;
 pub use env::*;
 
@@ -12,6 +9,9 @@ pub use logs::*;
 
 pub mod provider;
 pub use provider::*;
+
+pub mod query;
+pub use query::*;
 
 pub(crate) mod subscriptions;
 pub(crate) use subscriptions::*;

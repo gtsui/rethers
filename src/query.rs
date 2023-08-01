@@ -1,10 +1,6 @@
-use std::sync::Arc;
-use std::fs::File;
-use std::io::*;
+use std::{sync::Arc, fs::File, io::*};
 use ethers::prelude::*;
 use crate::*;
-
-
 
 pub async fn run_event_query(
   provider_url: &str,

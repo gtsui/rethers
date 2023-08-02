@@ -1,9 +1,9 @@
 #![allow(unused)]
 
 use async_trait::*;
-use rethers::*;
 use ethers::prelude::*;
 use std::sync::Arc;
+use rethers::*;
 
 struct SampleRethersLog {}
 
@@ -15,7 +15,7 @@ impl SampleRethersLog {
 
   pub async fn run(&mut self) {
     let address = str_to_H160("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"); //USDC ERC20
-    let topic = hash_event_signature("Transfer(address,address,uint256)");
+    let topic = event_signature("Transfer(address,address,uint256)");
     let provider_url = env_key_prefixed("WS_PROVIDER");   
     self.fetch_logs_init_provider(&provider_url, vec![address], vec![topic], 5000, 500).await;    
   }

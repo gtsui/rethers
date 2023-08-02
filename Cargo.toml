@@ -1,13 +1,12 @@
 [package]
-name = "project-rethers"
+name = "rethers"
 version = "0.1.0"
 edition = "2021"
 authors = ["tsuigeo <tsui.geoffrey@gmail.com>"]
 
 [workspace]
 members = [
-  "config",
-  "rethers"
+  "config"
 ]
 
 [dependencies]
@@ -15,9 +14,9 @@ dotenv = "0.15.0"
 ethers = { git = "https://github.com/gakonst/ethers-rs", features = ["ws", "rustls"] }
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1.56"
-config = { path = "./config" }
-rethers = { path = "./rethers" }
+async-recursion = "1.0.0"
 teloxide = "0.9"
+chrono = "0.4.19"
 
 [[example]]
 name = "sample_rethers_log"

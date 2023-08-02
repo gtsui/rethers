@@ -1,6 +1,4 @@
-use std::thread;
-use std::time::Duration;
-use std::{str::FromStr, sync::Arc};
+use std::{str::FromStr, sync::Arc, thread, time::Duration};
 use ethers::{prelude::*, core::k256::ecdsa::SigningKey};
 use async_recursion::async_recursion;
 

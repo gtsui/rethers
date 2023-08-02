@@ -1,5 +1,5 @@
 use ethers::prelude::*;
-use crate::*;
+use crate::{str_to_U256, str_to_H160};
 
 pub fn env_key_prefixed(key: &str) -> String {  
   let key = dotenv::var("ENV").unwrap() + "_" + key;

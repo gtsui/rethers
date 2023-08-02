@@ -1,10 +1,6 @@
-use std::sync::Arc;
-use std::fs::File;
-use std::io::*;
+use std::{sync::Arc, fs::File, io::*};
 use ethers::prelude::*;
 use crate::*;
-
-
 
 pub async fn run_event_query(
   provider_url: &str,
@@ -66,7 +62,7 @@ pub async fn _get_result_string(
 
   let provider = get_ws_provider(provider_url).await;
 
-  let topic_hash = hash_event_signature(topic);
+  let topic_hash = event_signature(topic);
   
   let logs = get_logs_by_chunk(
     Arc::clone(&provider),

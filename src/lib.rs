@@ -4,6 +4,9 @@
 pub mod env;
 pub use env::*;
 
+pub mod framework;
+pub use framework::*;
+
 pub mod logs;
 pub use logs::*;
 
@@ -21,9 +24,6 @@ pub use telegram::*;
 
 pub mod time;
 pub use time::*;
-
-pub mod traits;
-pub use traits::*;
 
 pub mod types;
 pub use types::*;

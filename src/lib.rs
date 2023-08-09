@@ -1,6 +1,12 @@
 #![allow(dead_code)]
 #![allow(non_snake_case)]
 
+pub mod algo;
+pub use algo::*;
+
+pub mod test_algo;
+pub use test_algo::*;
+
 pub mod env;
 pub use env::*;
 
@@ -24,6 +30,9 @@ pub use telegram::*;
 
 pub mod time;
 pub use time::*;
+
+pub mod traits;
+pub use traits::*;
 
 pub mod types;
 pub use types::*;

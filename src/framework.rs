@@ -1,141 +1,54 @@
-#![allow(warnings, unused)]
-
-use async_trait::*;
-use ethers::prelude::*;
+use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::mpsc;
+use tokio::sync::mpsc::*;
+use ethers::prelude::*;
 use crate::*;
 
-
-#[async_trait]
-pub trait RethersFramework {
-
-  async fn on_start(&mut self, provider: Arc<Provider<Ws>>);
-
-  async fn on_msg(&mut self, provider: Arc<Provider<Ws>>, msg: EventType);    
-
-  async fn run(&mut self, provider_url: &str, opts: FrameworkOptions) {
-
-    let provider = get_ws_provider(provider_url).await;
-    
-    self.on_start(Arc::clone(&provider)).await;
-    
-    let (tx, mut rx) = mpsc::channel(1024);
-
-    if opts.subscribe_pending_txs {
-      let tx_pending_txs = tx.clone();
-      _subscribe_pending_txs(Arc::clone(&provider), tx_pending_txs).await;
-    }
-
-    if opts.subscribe_blocks {
-      let tx_blocks = tx.clone();
-      _subscribe_blocks(Arc::clone(&provider), tx_blocks).await;
-    }
-
-    for filter in opts.log_filters {
-      let tx_logs = tx.clone();
-      _subscribe_logs(Arc::clone(&provider), tx_logs, filter).await;
-    }
-    
-    while let Some(msg) = rx.recv().await {
-      self.on_msg(Arc::clone(&provider), msg).await;
-    }
-  }
-  
+pub struct Framework<T: Algo> {
+  pub algo: T,
+  pub providers: HashMap<String, Arc<Provider<Ws>>>,
+  tx: Sender<EventType>,
+  rx: Receiver<EventType>
 }
 
+impl<T> Framework<T> where T: Algo {
 
-#[async_trait]
-pub trait RethersLog {
-
-  async fn on_fetched(&mut self, provider: Arc<Provider<Ws>>, logs: Vec<Log>);
-  
-  async fn fetch_logs(
-    &mut self,
-    provider: Arc<Provider<Ws>>,
-    addresses: Vec<H160>,
-    topics: Vec<H256>,
-    prior_blocks: u64,
-    chunk_size: u64
-  ) {
-
-    let latest_block = get_latest_block(Arc::clone(&provider)).await;
-    
-    let logs = get_logs_by_chunk(
-      Arc::clone(&provider),
-      addresses,
-      topics,
-      latest_block - prior_blocks,
-      latest_block,
-      chunk_size
-    ).await;
-    
-    self.on_fetched(Arc::clone(&provider), logs).await;
+  pub fn new(algo: T) -> Self {
+    let (tx, mut rx) = mpsc::channel(1024);
+    Framework {
+      algo,
+      providers: HashMap::new(),
+      tx,
+      rx
+    }
   }
 
-  
-  async fn fetch_logs_init_provider(
-    &mut self,
-    provider_url: &str,
-    addresses: Vec<H160>,
-    topics: Vec<H256>,
-    prior_blocks: u64,
-    chunk_size: u64
-  ) {
-    
+  pub async fn add_provider(&mut self, provider_url: &str) {
     let provider = get_ws_provider(provider_url).await;
-    self.fetch_logs(
-      provider,
-      addresses,
-      topics,
-      prior_blocks,
-      chunk_size
-    ).await;
+    self.providers.insert(provider_url.to_string(), Arc::clone(&provider));
   }
 
-  async fn fetch_logs_historical(
-    &mut self,
-    provider: Arc<Provider<Ws>>,
-    addresses: Vec<H160>,
-    topics: Vec<H256>,
-    start_block: u64,
-    end_block: u64,
-    chunk_size: u64
-  ) {
-
-    let logs = get_logs_by_chunk(
-      Arc::clone(&provider),
-      addresses,
-      topics,
-      start_block,
-      end_block,
-      chunk_size
-    ).await;
-
-    self.on_fetched(Arc::clone(&provider), logs).await; 
+  pub async fn subscribe_pending_txs(&mut self, provider_url: &str) {
+    let maybe_provider = self.providers.get(provider_url);
+    match maybe_provider {
+      Some(provider) => {
+        _subscribe_pending_txs(Arc::clone(&provider), self.tx.clone()).await;
+      },
+      None => {
+        let provider = get_ws_provider(provider_url).await;
+        self.providers.insert(provider_url.to_string(), Arc::clone(&provider));
+        _subscribe_pending_txs(Arc::clone(&provider), self.tx.clone()).await;
+      }
+    }
   }
 
-  async fn fetch_logs_historical_init_provider(
-    &mut self,
-    provider_url: &str,
-    addresses: Vec<H160>,
-    topics: Vec<H256>,
-    start_block: u64,
-    end_block: u64,
-    chunk_size: u64
-  ) {
+  pub async fn run(&self) {
 
-    let provider = get_ws_provider(provider_url).await;
-
-    self.fetch_logs_historical(
-      provider,
-      addresses,
-      topics,
-      start_block,
-      end_block,
-      chunk_size
-    ).await;
+    self.algo.on_start(self).await;
+    
+    while let Some(msg) = self.rx.recv().await {
+        //self.algo.on_msg(&msg);
+    }
   }
-
-  
 }

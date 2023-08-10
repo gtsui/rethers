@@ -36,7 +36,7 @@ impl Algo for TestAlgo {
     ).await;
   }
 
-  async fn on_msg(&mut self, msg: &EventType) {
+  async fn on_msg(&mut self, af: &AlgoFramework, msg: &EventType) {
     match msg {
       EventType::PendingTx(tx) => {
         //println!("{:?}", tx);

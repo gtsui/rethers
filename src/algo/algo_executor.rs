@@ -26,7 +26,7 @@ impl<T> AlgoExecutor<T> where T: Algo {
 
     while let Some(msg) = self.subscriber.rx.recv().await {
       for algo in self.algos.iter_mut() {
-        algo.on_msg(&msg).await;
+        algo.on_msg(&self.subscriber, &msg).await;
       }
     }
   }

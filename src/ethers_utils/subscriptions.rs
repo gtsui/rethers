@@ -12,8 +12,9 @@ pub(crate) async fn _subscribe_pending_txs(provider: Arc<Provider<Ws>>, tx: Send
     while let Some(txn_hash) = stream.next().await {
       let maybe_txn = provider.get_transaction(txn_hash).await.unwrap_or_else(|_| None);
       if let Some(txn) = maybe_txn {
-        let msg = EventType::PendingTx(txn);
-        tx.send(msg).await;
+        let source = provider.get_chainid().await.unwrap().to_string();
+        let msg = EventType::PendingTx(source, txn);        
+        tx.send(msg).await;        
       }
     }
   });
@@ -27,7 +28,8 @@ pub(crate) async fn _subscribe_blocks(provider: Arc<Provider<Ws>>, tx: Sender<Ev
     while let Some(block_header) = stream.next().await {
       let maybe_block_with_txs = _block_header_to_block(Arc::clone(&provider), block_header).await;      
       if let Some(block_with_txs) = maybe_block_with_txs {
-          tx.send(EventType::Block(block_with_txs)).await;
+        let source = provider.get_chainid().await.unwrap().to_string();
+        tx.send(EventType::Block(source, block_with_txs)).await;
       }                      
     }    
   });
@@ -47,7 +49,8 @@ pub(crate) async fn _subscribe_logs(provider: Arc<Provider<Ws>>, tx: Sender<Even
   tokio::spawn(async move {
     let mut stream = provider.subscribe_logs(&filter).await.unwrap();
     while let Some(log) = stream.next().await {
-      tx.send(EventType::Log(log)).await;
+      let source = provider.get_chainid().await.unwrap().to_string();
+      tx.send(EventType::Log(source, log)).await;
     }    
   });  
 }

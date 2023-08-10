@@ -38,13 +38,14 @@ impl Algo for TestAlgo {
 
   async fn on_msg(&mut self, af: &AlgoFramework, msg: &EventType) {
     match msg {
-      EventType::PendingTx(tx) => {
+      EventType::PendingTx(source, tx) => {
         //println!("{:?}", tx);
       },
-      EventType::Block(block) => {
+      EventType::Block(source, block) => {
 
       },
-      EventType::Log(log) => {
+      EventType::Log(source, log) => {
+        println!("{:?}", source);
         println!("{:?}", log);
       }
     }

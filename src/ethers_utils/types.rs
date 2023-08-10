@@ -1,8 +1,8 @@
 #[derive(Debug)]
 pub enum EventType {
-  PendingTx(ethers::types::Transaction),
-  Block(ethers::types::Block<ethers::types::Transaction>),
-  Log(ethers::types::Log)
+  PendingTx(String, ethers::types::Transaction),
+  Block(String, ethers::types::Block<ethers::types::Transaction>),
+  Log(String, ethers::types::Log)
 }
 
 #[derive(Debug,Clone,PartialEq,Eq)]

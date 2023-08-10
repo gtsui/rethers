@@ -4,14 +4,14 @@
 pub mod algo;
 pub use algo::*;
 
-pub mod test_algo;
-pub use test_algo::*;
+pub mod algo_executor;
+pub use algo_executor::*;
+
+pub mod algo_framework;
+pub use algo_framework::*;
 
 pub mod env;
 pub use env::*;
-
-pub mod framework;
-pub use framework::*;
 
 pub mod logs;
 pub use logs::*;
@@ -30,9 +30,6 @@ pub use telegram::*;
 
 pub mod time;
 pub use time::*;
-
-pub mod traits;
-pub use traits::*;
 
 pub mod types;
 pub use types::*;

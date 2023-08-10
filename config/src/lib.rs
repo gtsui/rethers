@@ -4,18 +4,14 @@ use rethers::*;
 
 #[derive(Clone)]
 pub struct Config {
-  pub ENV: String,
-  pub CHAIN_ID: u64,
-  pub PROVIDER_URL: String,
+  pub ETHEREUM_PROVIDER: String
 }
 
 impl Config {
 
   pub fn new() -> Self {
     Config {
-      ENV: env_key_str("ENV"),
-      CHAIN_ID: Self::env_to_chainid(&env_key_str("ENV")),
-      PROVIDER_URL: env_key_prefixed("WS_PROVIDER")
+      ETHEREUM_PROVIDER: env_key_prefixed("ETHEREUM_PROVIDER")
     }
   }
   

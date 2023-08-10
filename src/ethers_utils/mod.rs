@@ -13,12 +13,6 @@ pub use query::*;
 pub(crate) mod subscriptions;
 pub(crate) use subscriptions::*;
 
-pub mod telegram;
-pub use telegram::*;
-
-pub mod time;
-pub use time::*;
-
 pub mod types;
 pub use types::*;
 

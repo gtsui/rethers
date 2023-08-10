@@ -4,8 +4,11 @@
 pub mod algo;
 pub use algo::*;
 
-pub mod coreutils;
-pub use coreutils::*;
+pub mod core_utils;
+pub use core_utils::*;
+
+pub mod ethers_utils;
+pub use ethers_utils::*;
 
 
 
